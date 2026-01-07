@@ -32,17 +32,107 @@ Start by understanding the current project context, then ask questions one at a 
 - Cover: architecture, components, data flow, error handling, testing
 - Be ready to go back and clarify if something doesn't make sense
 
+## Stack-Specific Decision Trees
+
+When brainstorming features for your stack, work through these decision trees:
+
+### Platform Decision
+
+```
+Is this feature...
+├── iOS/native only?
+│   └── Use indie-stack:swift-ios-app patterns
+├── Web only?
+│   └── Use Next.js + Vercel patterns
+├── Backend/API only?
+│   └── Use indie-stack:supabase-setup patterns
+└── Full stack (mobile + web + backend)?
+    └── Design backend first, then platform UIs
+```
+
+### Data Architecture
+
+```
+Does this feature need data persistence?
+├── No → Local state only (SwiftUI @State, React useState)
+├── Yes, local only → SwiftData (iOS) or localStorage (web)
+├── Yes, synced across devices →
+│   ├── Real-time sync needed?
+│   │   ├── Yes → Supabase Realtime
+│   │   └── No → Supabase REST + manual sync
+│   └── Offline support needed?
+│       ├── Yes → SwiftData + SyncService pattern
+│       └── No → Direct Supabase queries
+└── Yes, shared between users →
+    └── Supabase with appropriate RLS policies
+```
+
+### Authentication Strategy
+
+```
+Does this feature need auth?
+├── No → Public access
+├── Yes, identified user only →
+│   ├── New app? → Sign in with Apple (iOS) or magic link (web)
+│   ├── Existing app? → Use existing AuthService
+│   └── Trial flow? → One free action, then require sign-in
+└── Yes, with roles/permissions →
+    └── Add roles to profiles table + RLS policies
+```
+
+### AI Integration
+
+```
+Does this feature use AI?
+├── No → Skip this section
+├── Yes →
+│   ├── Where does AI run?
+│   │   ├── Edge Function (Supabase) → indie-stack:edge-function
+│   │   └── Client-side → Not recommended (API key exposure)
+│   ├── What AI provider?
+│   │   ├── Vision/multimodal → Gemini (good price/performance)
+│   │   ├── Text generation → Claude or GPT-4
+│   │   └── Embeddings → OpenAI text-embedding-3-small
+│   └── Structured output needed?
+│       ├── Yes → Use JSON mode + Zod validation
+│       └── No → Stream response to UI
+```
+
+### Offline-First Decision
+
+```
+Should this work offline?
+├── Core feature that users expect to work anywhere →
+│   └── YES: SwiftData local-first, sync when connected
+├── Real-time collaborative feature →
+│   └── NO: Require connection, show clear offline state
+├── Read-heavy feature (viewing history, stats) →
+│   └── YES: Cache data locally, refresh when connected
+└── Write-heavy feature (creating content) →
+    └── YES: Save locally, queue uploads for later
+```
+
+## Key Questions to Ask
+
+When brainstorming, make sure to cover:
+
+1. **Platform**: iOS only, web only, or both?
+2. **Auth**: Who can use this? Anonymous, authenticated, or specific roles?
+3. **Data**: Where does data live? Local, synced, or shared?
+4. **Offline**: Should this work without internet?
+5. **AI**: Is AI involved? Where should it run?
+6. **UX**: What's the happy path? What are the error cases?
+
 ## After the Design
 
 **Documentation:**
 - Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document to git
 
 **Implementation (if continuing):**
-- Ask: "Ready to set up for implementation?"
-- Use superpowers:using-git-worktrees to create isolated workspace
-- Use superpowers:writing-plans to create detailed implementation plan
+- Ask: "Ready to create the implementation plan?"
+- Use indie-stack:writing-plans to create detailed implementation plan
+- Use indie-stack:subagent-driven-development to execute
 
 ## Key Principles
 
@@ -52,3 +142,4 @@ Start by understanding the current project context, then ask questions one at a 
 - **Explore alternatives** - Always propose 2-3 approaches before settling
 - **Incremental validation** - Present design in sections, validate each
 - **Be flexible** - Go back and clarify when something doesn't make sense
+- **Think UX first** - Every feature should have clear user flows
