@@ -1,6 +1,6 @@
 ---
 name: supabase-setup
-description: Use when setting up Supabase backend with Auth, Database, Storage, and Edge Functions.
+description: Use when setting up Supabase, creating database tables, writing RLS policies, configuring Auth (especially Apple Sign-In), creating storage buckets, writing Edge Functions in TypeScript/Deno, or running migrations. Triggers on "Supabase setup", "RLS policy", "Edge Function", "database schema", "storage bucket", "Apple Sign-In auth".
 ---
 
 # Supabase Setup

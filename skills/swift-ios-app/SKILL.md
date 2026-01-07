@@ -1,6 +1,6 @@
 ---
 name: swift-ios-app
-description: Use when setting up a new iOS app or understanding iOS project architecture with SwiftUI, SwiftData, and Supabase.
+description: Use when creating iOS apps, setting up Xcode projects, designing app architecture, implementing SwiftUI views, using SwiftData models, adding Swift 6 concurrency with actors, or integrating Supabase backend. Triggers on "new iOS app", "Swift architecture", "SwiftData setup", "actor pattern", "iOS project structure".
 ---
 
 # Swift iOS App Architecture
