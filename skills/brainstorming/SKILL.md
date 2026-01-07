@@ -112,6 +112,77 @@ Should this work offline?
     └── YES: Save locally, queue uploads for later
 ```
 
+## Consulting Specialized Agents
+
+**IMPORTANT: Don't guess on domain-specific questions. Consult experts.**
+
+When you encounter questions that require specialized knowledge, dispatch the appropriate agent to get informed recommendations before presenting options to the user.
+
+### When to Consult
+
+| Question Type | Agent to Consult | Example Questions |
+|---------------|------------------|-------------------|
+| **UX/User Flow** | `product-ux-strategist` | "How should onboarding work?", "Modal vs sheet?", "Where should this button go?" |
+| **iOS Architecture** | `principal-ios-engineer` | "Actor vs class?", "How to handle state?", "Navigation pattern?" |
+| **Backend Design** | `staff-backend-architect` | "RLS policy approach?", "Edge Function structure?", "Caching strategy?" |
+
+### How to Consult
+
+1. **Formulate the question** with full context about the feature being designed
+2. **Dispatch the agent** with a specific question and the options you're considering
+3. **Get the recommendation** with reasoning
+4. **Present to user** with the agent's recommendation marked as "(Recommended by [agent])"
+
+### Example Flow
+
+```
+User: "I want to add a delete feature for pours"
+
+You (thinking): This involves UX decisions. Let me consult the UX expert.
+
+[Dispatch product-ux-strategist]:
+"We're designing a delete feature for pour photos. The user wants to delete
+pours from their history. What's the best UX pattern for destructive actions
+in a mobile app? Options I'm considering:
+1. Swipe to delete with undo toast
+2. Delete button with confirmation dialog
+3. Edit mode with multi-select delete
+Context: This is a latte art grading app, pours have sentimental value."
+
+[Agent returns]: "Recommend option 1 (swipe + undo) because..."
+
+You (to user): "For the delete interaction, I consulted a UX expert. Here are the options:
+
+**Option 1: Swipe to delete with undo toast** (Recommended by UX strategist)
+- Quick gesture for single deletions
+- 5-second undo window prevents accidents
+- Matches iOS conventions
+
+Option 2: Confirmation dialog
+- More explicit but adds friction
+- Better for truly irreversible actions
+
+Option 3: Edit mode with multi-select
+- Good for bulk operations
+- Overkill for occasional single deletes
+
+The UX strategist recommends Option 1. What do you think?"
+```
+
+### Agents Available
+
+- **`product-ux-strategist`** - User flows, onboarding, UI patterns, navigation, platform conventions
+- **`principal-ios-engineer`** - Swift architecture, SwiftUI patterns, SwiftData, concurrency, performance
+- **`staff-backend-architect`** - Supabase, database design, API patterns, caching, AI integration
+
+### Rules for Consultation
+
+1. **Always consult for UX questions** - Don't guess on user experience
+2. **Consult for architecture decisions** - "How should I structure this?" → ask the expert
+3. **Don't consult for simple decisions** - "What should I name this variable?" → decide yourself
+4. **Present the recommendation clearly** - Mark which option the expert recommended and why
+5. **User can override** - The recommendation is advice, not a mandate
+
 ## Key Questions to Ask
 
 When brainstorming, make sure to cover:
@@ -121,7 +192,7 @@ When brainstorming, make sure to cover:
 3. **Data**: Where does data live? Local, synced, or shared?
 4. **Offline**: Should this work without internet?
 5. **AI**: Is AI involved? Where should it run?
-6. **UX**: What's the happy path? What are the error cases?
+6. **UX**: What's the happy path? What are the error cases? **(Consult UX strategist)**
 
 ## After the Design
 
